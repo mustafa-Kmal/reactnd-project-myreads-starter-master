@@ -7,7 +7,13 @@ import Shelf from "./Shelf";
 
 class AllShelfs extends React.Component {
   render() {
-    const AllShelfs = ["wantToRead", "currentlyReading", "read"];
+    const AllShelfs = {
+      currentlyReading: [],
+      wantToRead: [],
+
+      read: [],
+    };
+
     const AllBooks = [
       {
         id: "1",
@@ -106,24 +112,32 @@ class AllShelfs extends React.Component {
       <div className='list-books-content'>
         {" "}
         <ol>
-          {AllShelfs.map((shelfElement) => {
-            return (
-              <li>
-                {" "}
-                <Shelf
-                  key={shelfElement.toString()}
-                  className={shelfElement.toString()}
-                  ShelfName={shelfElement.toString()}
-                  BooksInShelf={AllBooks.filter((book) => {
-                    return (
-                      book.shelf
-                        .toString()
-                        .replaceAll(/\s/g, "")
+          {Object.keys(AllShelfs).map((shelfElement, i) => {
+            if (AllShelfs.hasOwnProperty(shelfElement)) {
+              var element = AllShelfs[shelfElement];
+              AllBooks.map((book) => {
+                if (
+                  book.shelf
+                    .toString()
+                    .replaceAll(/\s/g, "")
+                    .toLowerCase()
+                    .localeCompare(
+                      Object.getOwnPropertyNames(AllShelfs)
+                        [i].toString()
                         .toLowerCase()
-                        .localeCompare(shelfElement.toString().toLowerCase()) === 0
-                    );
-                  })}
-                />{" "}
+                    ) === 0
+                ) {
+                  element.push(book);
+                 
+                }
+              });
+            }
+            return (
+              <li key={i}>
+                <Shelf
+                  ShelfName={Object.getOwnPropertyNames(AllShelfs)[i]}
+                  BooksInShelf={element}
+                />
               </li>
             );
           })}
