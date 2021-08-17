@@ -7,13 +7,13 @@ import PropTypes from 'prop-types'
 
 class Book extends React.Component {
 
-    static propTypes = {
-        BookCover: PropTypes.string.isRequired,
-        BookTitle: PropTypes.string.isRequired,
-        BookAuthors: PropTypes.string.isRequired,
-        shelf: PropTypes.string.isRequired,
+    // static propTypes = {
+    //     BookCover: PropTypes.object.isRequired,
+    //     BookTitle: PropTypes.string.isRequired,
+    //     BookAuthors: PropTypes.string.isRequired,
+    //     shelf: PropTypes.string.isRequired,
 
-      }
+    //   }
       state = {
         shelf: ''
       }

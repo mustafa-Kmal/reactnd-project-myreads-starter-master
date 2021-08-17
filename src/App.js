@@ -4,6 +4,8 @@ import "./App.css";
 import Book from "./Book";
 import BookList from "./BookList";
 import AllShelfs from './AllShelfs'
+import Shelf from "./Shelf";
+
 
 class BooksApp extends React.Component {
   state = {
@@ -48,10 +50,13 @@ class BooksApp extends React.Component {
             <div className='list-books-title'>
               <h1>MyReads</h1>
             </div>
+
+
+            <AllShelfs/>
             <div className='list-books-content'>
               <div>
 
-                <AllShelfs/>
+                
                 <div className='bookshelf'>
                   <h2 className='bookshelf-title'>Currently Reading</h2>
                   <div className='bookshelf-books'>

@@ -6,8 +6,6 @@ import PropTypes from "prop-types";
 import Shelf from "./Shelf";
 
 class AllShelfs extends React.Component {
-  
-
   render() {
     const AllShelfs = ["wantToRead", "currentlyReading", "read"];
     const AllBooks = [
@@ -105,25 +103,26 @@ class AllShelfs extends React.Component {
 
     const { BooksInShelf, ShelfName } = this.props;
     return (
-      <div className='bookshelf'>
+      <div className='list-books-content'>
+        {" "}
         <ol>
-          {AllShelfs.map((Shelf, i) => {
+          {AllShelfs.map((shelfElement) => {
             return (
               <li>
                 {" "}
                 <Shelf
-                  key={i}
-                  ShelfName={Shelf}
-                  BooksInShelf={
-                    (Shelf = AllBooks.filter((book) => {
-                      return (
-                        book.shelf
-                          .replaceAll(/\s/g, "")
-                          .toLowerCase()
-                          .localeCompare(Shelf.toLowerCase()) === 0
-                      );
-                    }))
-                  }
+                  key={shelfElement.toString()}
+                  className={shelfElement.toString()}
+                  ShelfName={shelfElement.toString()}
+                  BooksInShelf={AllBooks.filter((book) => {
+                    return (
+                      book.shelf
+                        .toString()
+                        .replaceAll(/\s/g, "")
+                        .toLowerCase()
+                        .localeCompare(shelfElement.toString().toLowerCase()) === 0
+                    );
+                  })}
                 />{" "}
               </li>
             );
