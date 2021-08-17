@@ -3,13 +3,10 @@ import React, { Component } from "react";
 import "./App.css";
 import DropDown from "./DropDown";
 import PropTypes from "prop-types";
-import Shelf from './Shelf'
+import Shelf from "./Shelf";
 
 class AllShelfs extends React.Component {
-  static propTypes = {
-    BooksInShelf: PropTypes.array.isRequired,
-    ShelfName: PropTypes.string.isRequired,
-  };
+  
 
   render() {
     const AllShelfs = ["wantToRead", "currentlyReading", "read"];
@@ -106,24 +103,31 @@ class AllShelfs extends React.Component {
       },
     ];
 
-    AllShelfs.map((Shelf, i) => {
-        Shelf =AllBooks.filter((book)=>{ return
-            ( book.shelf .replaceAll(/\s/g,'').toLowerCase().localeCompare(Shelf.toLowerCase())===0) })}
-
-      )
-
-
-
-
     const { BooksInShelf, ShelfName } = this.props;
     return (
       <div className='bookshelf'>
         <ol>
-        {AllShelfs.map((Shelf, i) => {
-          <li> <Shelf key={i} ShelfName={Shelf} BooksInShelf={Shelf =AllBooks.filter((book)=>{ return
-              ( book.shelf .replaceAll(/\s/g,'').toLowerCase().localeCompare(Shelf.toLowerCase())===0) })} /> </li>;
-
-        })}
+          {AllShelfs.map((Shelf, i) => {
+            return (
+              <li>
+                {" "}
+                <Shelf
+                  key={i}
+                  ShelfName={Shelf}
+                  BooksInShelf={
+                    (Shelf = AllBooks.filter((book) => {
+                      return (
+                        book.shelf
+                          .replaceAll(/\s/g, "")
+                          .toLowerCase()
+                          .localeCompare(Shelf.toLowerCase()) === 0
+                      );
+                    }))
+                  }
+                />{" "}
+              </li>
+            );
+          })}
         </ol>
       </div>
     );
