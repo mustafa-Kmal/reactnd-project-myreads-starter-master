@@ -33,8 +33,7 @@ class Book extends React.Component {
             <div className='book-shelf-changer'> 
           
               
-            {    console.log("Book ID is:    " + this.props.BookID)
-}
+            
             <select value={this.props.shelf}  onChange={e => this.props.onChangeShelf(this.props.BookID, e.target.value)}>
                 <option value='move' disabled>
                   Move to...

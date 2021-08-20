@@ -28,7 +28,6 @@ class BooksApp extends React.Component {
       //   BookAuthors: "Harper Lee",
       //   shelf: "Currently Reading",
       // },
-
       // "2": {
       //   id: "2",
       //   BookCover: {
@@ -41,7 +40,6 @@ class BooksApp extends React.Component {
       //   BookAuthors: "Orson Scott Card",
       //   shelf: "Currently Reading",
       // },
-
       // "3": {
       //   id: "3",
       //   BookCover: {
@@ -54,7 +52,6 @@ class BooksApp extends React.Component {
       //   BookAuthors: "David McCullough",
       //   shelf: "Want to Read",
       // },
-
       // "4": {
       //   id: "4",
       //   BookCover: {
@@ -67,7 +64,6 @@ class BooksApp extends React.Component {
       //   BookAuthors: "J.K. Rowling",
       //   shelf: "Want to Read",
       // },
-
       // "5": {
       //   id: "5",
       //   BookCover: {
@@ -80,7 +76,6 @@ class BooksApp extends React.Component {
       //   BookAuthors: "J.K. Rowling",
       //   shelf: "Read",
       // },
-
       // "6": {
       //   id: "6",
       //   BookCover: {
@@ -93,7 +88,6 @@ class BooksApp extends React.Component {
       //   BookAuthors: "Seuss",
       //   shelf: "Read",
       // },
-
       // "7": {
       //   id: "7",
       //   BookCover: {
@@ -115,6 +109,10 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
+
+    query: "",
+
+    showenBooks: [],
   };
 
   componentDidMount() {
@@ -123,22 +121,44 @@ class BooksApp extends React.Component {
     });
   }
 
-  
-
- 
-
   reloadShelves = (book, shelf) => {
-    const books = this.state.AllBooks
-  
-    Object.entries(books).find(e => e[1].id == book)[1].shelf = shelf;
-    BooksAPI.update(book, shelf)
-    console.log("setting new shelf for " + book.id + " to " + shelf)
-    this.setState((prevState) => ({
-      AllBooks: books
-    }))
-  }
+    const books = this.state.AllBooks;
 
-  
+    Object.entries(books).find((e) => e[1].id == book)[1].shelf = shelf;
+    BooksAPI.update(book, shelf);
+    console.log("setting new shelf for " + book.id + " to " + shelf);
+
+    this.setState((prevState) => ({
+      AllBooks: books,
+    }));
+  };
+
+  updateQuery = (query) => {
+    this.setState(() => ({
+      query: query.trim(),
+    }));
+    console.log(
+      "I came here ",
+      this.state.AllBooks,
+      "searching for ",
+      this.state.query.trim().toLowerCase()
+    );
+
+    if (this.state.query) {
+      this.state.showenBooks = this.state.AllBooks
+      BooksAPI.search(this.state.query.trim().toLowerCase(), 20).then(
+        (showenBooks) => {
+          showenBooks.length > 0
+            ? this.setState({ showenBooks: showenBooks })
+            : this.setState({ showenBooks: [], searchErr: true });
+        }
+      );
+
+      // if query is empty => reset state to default
+    } else this.setState({ showenBooks: [] });
+    console.log(typeof this.state.showenBooks);
+  };
+
 
 
   render() {
@@ -161,7 +181,20 @@ class BooksApp extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type='text' placeholder='Search by title or author' />
+                {JSON.stringify(this.state.query)}
+                <input
+                  type='text'
+                  placeholder='Search by title or author'
+                  value={this.state.query}
+                  onChange={(e) => this.updateQuery(e.target.value)}
+                />
+
+                {/* {console.log(b[1].title.toLowerCase())} */}
+
+                <div>
+                 
+                  <BookList Books={this.state.showenBooks} />
+                </div>
               </div>
             </div>
             <div className='search-books-results'>
@@ -174,9 +207,10 @@ class BooksApp extends React.Component {
               <h1>MyReads</h1>
             </div>
 
-            {/* <BookList  Books= {this.state.AllBooks}/> */}
-            {console.log(this.state.AllBooks)}
-            <AllShelfs Books={this.state.AllBooks} reload={this.reloadShelves} />
+            <AllShelfs
+              Books={this.state.AllBooks}
+              reload={this.reloadShelves}
+            />
 
             <div className='open-search'>
               <button onClick={() => this.setState({ showSearchPage: true })}>
