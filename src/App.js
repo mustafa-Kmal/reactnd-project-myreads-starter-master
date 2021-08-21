@@ -5,6 +5,9 @@ import Book from "./Book";
 import BookList from "./BookList";
 import AllShelfs from "./AllShelfs";
 import Shelf from "./Shelf";
+import SearchPage from "./SearchPage";
+import { Link } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 class BooksApp extends React.Component {
   state = {
@@ -14,6 +17,7 @@ class BooksApp extends React.Component {
 
       read: [],
     },
+    showenBooks: [],
 
     AllBooks: [
       // "0": {
@@ -111,30 +115,26 @@ class BooksApp extends React.Component {
     showSearchPage: false,
 
     query: "",
-
-    showenBooks: [],
   };
 
   componentDidMount() {
     BooksAPI.getAll().then((AllBooks) => {
       // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
-      console.log(typeof Object.keys(AllBooks))
+      console.log(typeof Object.keys(AllBooks));
 
       this.setState({ AllBooks });
-      
     });
   }
 
   reloadShelves = (book, shelf) => {
     const books = this.state.AllBooks;
-    
+
     const BookToChange = Object.entries(books).find((e) => {
-      
-      return e[1] == book[1][1]
+      return e[1] == book[1][1];
     });
 
     // BookToChange.shelf = shelf;
-    BooksAPI.update(BookToChange, shelf).then(response =>{
+    BooksAPI.update(BookToChange, shelf).then((response) => {
       BookToChange[1].shelf = shelf;
       // console.log(Object.entries(this.state.AllBooks))
 
@@ -142,7 +142,6 @@ class BooksApp extends React.Component {
 
       // const fond = Object.entries(this.state.AllBooks)
       // .filter((bk) => {
-       
 
       //   return bk[1] !== book[1][1]
       // }).concat(BookElement);
@@ -153,8 +152,6 @@ class BooksApp extends React.Component {
       // })
       // .concat(BookElement)
 
-      
-
       //  console.log(BookElement)
       //  console.log(fond)
       //  console.log(final)
@@ -162,44 +159,31 @@ class BooksApp extends React.Component {
 
       //  this.setState({ AllBooks: [] });
 
-       BooksAPI.getAll().then((AllBooks) => {
+      BooksAPI.getAll().then((AllBooks) => {
         // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
-        console.log(typeof Object.keys(AllBooks))
-  
+        console.log(typeof Object.keys(AllBooks));
+
         this.setState({ AllBooks });
-        
       });
 
       // this.setState((prevState) => ({
       //   AllBooks: Object.entries(prevState.AllBooks)
       //     .filter((bk) => {
-            
+
       //       return bk[1].id !== book[1][1].id
       //     })
       //     .concat(BookElement),
       // }));
-
     });
-
-
-    
   };
-
-
-
-
-
-
-
-
 
   updateQuery = (query) => {
     this.setState(() => ({
-      query: query.trim(),
+      query: query,
     }));
-   
+
     if (this.state.query) {
-      this.state.showenBooks = this.state.AllBooks;
+      // this.state.AllBooks = this.state.AllBooks;
       BooksAPI.search(this.state.query.trim().toLowerCase(), 20).then(
         (showenBooks) => {
           showenBooks.length > 0
@@ -215,60 +199,48 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className='app'>
-        {this.state.showSearchPage ? (
-          <div className='search-books'>
-            <div className='search-books-bar'>
-              <button
-                className='close-search'
-                onClick={() => this.setState({ showSearchPage: false })}>
-                Close
-              </button>
-              <div className='search-books-input-wrapper'>
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                {JSON.stringify(this.state.query)}
-                <input
-                  type='text'
-                  placeholder='Search by title or author'
-                  value={this.state.query}
-                  onChange={(e) => this.updateQuery(e.target.value)}
-                />
-
-                {/* {console.log(b[1].title.toLowerCase())} */}
-
-                <div>
-                  <BookList Books={this.state.showenBooks} />
-                </div>
-              </div>
-            </div>
-            <div className='search-books-results'>
-              <ol className='books-grid' />
-            </div>
-          </div>
-        ) : (
-          <div className='list-books'>
-            <div className='list-books-title'>
-              <h1>MyReads</h1>
-            </div>
-            {console.log(this.state.AllBooks)}
-            <AllShelfs
+        <Route
+          exact
+          path='/search'
+          render={() => (
+            <SearchPage
+              updateQuery={this.updateQuery}
               Books={this.state.AllBooks}
               reload={this.reloadShelves}
+              onClick={() => this.setState({ showSearchPage: false })}
             />
+          )}
+        />
 
-            <div className='open-search'>
+        <Route
+          exact
+          path='/'
+          render={() => (
+            <div className='list-books'>
+              <div className='list-books-title'>
+                <h1>MyReads</h1>
+              </div>
+
+              <AllShelfs
+                Books={this.state.AllBooks}
+                reload={this.reloadShelves}
+              />
+
+              <div className='open-search'>
+              <Link to='./search' className='search-books'>
               <button onClick={() => this.setState({ showSearchPage: true })}>
-                Add a book
-              </button>
+                  Add a book
+                </button>
+            </Link>
+                {/* <button onClick={() => this.setState({ showSearchPage: true })}>
+                  Add a book
+                </button> */}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        />
+
+       
       </div>
     );
   }
