@@ -15,23 +15,18 @@ class Shelf extends React.Component {
    
 
     const { BooksInShelf, ShelfName } = this.props;
-    console.log( this.props);
     return (
       <div className='bookshelf'>
         <h2 className='bookshelf-title'>{ShelfName}</h2>
         <div className='bookshelf-books'>
           <ol className='books-grid'>
-            {BooksInShelf.map((book) => {
+            {Object.entries(BooksInShelf).map((book) => {
                 
               return (
                 <li key={book[1].id}>
                   {" "}
                   <Book
-                    BookID={book[1].id}
-                    BookCover={book[1].imageLinks.thumbnail}
-                    BookTitle={book[1].title}
-                    BookAuthors={book[1].authors}
-                    shelf={book[1].shelf}
+                    Book={book}
                     onChangeShelf={this.props.reload}
                   />
                 </li>

@@ -117,35 +117,60 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((AllBooks) => {
+      // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
+      console.log(typeof Object.keys(AllBooks))
+
       this.setState({ AllBooks });
+      
     });
   }
 
   reloadShelves = (book, shelf) => {
     const books = this.state.AllBooks;
+    const BookToChange = Object.entries(books).find((e) => e[1] == book);
 
-    Object.entries(books).find((e) => e[1].id == book)[1].shelf = shelf;
-    BooksAPI.update(book, shelf);
-    console.log("setting new shelf for " + book.id + " to " + shelf);
+    // BookToChange.shelf = shelf;
+    BooksAPI.update(BookToChange, shelf).then(response =>{
+      BookToChange[1].shelf = shelf;
+      // console.log(Object.entries(this.state.AllBooks))
 
-    this.setState((prevState) => ({
-      AllBooks: books,
-    }));
+      const fond = Object.entries(this.state.AllBooks)
+      .filter((bk) => {
+       
+
+        return bk[1] !== book
+      })
+      // .concat(book);
+
+      // .reduce((obj, key) => {
+      //   obj[key] = this.state.AllBooks[key];
+      //   return obj;
+      // }, {}) ;
+
+
+       console.log(fond)
+
+      this.setState((prevState) => ({
+        AllBooks: Object.entries(prevState.AllBooks)
+          .filter((bk) => {
+            return bk[1].id !== book
+          })
+          .concat(book),
+      }));
+
+    });
+
+
+    
   };
 
   updateQuery = (query) => {
     this.setState(() => ({
       query: query.trim(),
     }));
-    console.log(
-      "I came here ",
-      this.state.AllBooks,
-      "searching for ",
-      this.state.query.trim().toLowerCase()
-    );
-
+   
     if (this.state.query) {
-      this.state.showenBooks = this.state.AllBooks
+      this.state.showenBooks = this.state.AllBooks;
       BooksAPI.search(this.state.query.trim().toLowerCase(), 20).then(
         (showenBooks) => {
           showenBooks.length > 0
@@ -156,10 +181,7 @@ class BooksApp extends React.Component {
 
       // if query is empty => reset state to default
     } else this.setState({ showenBooks: [] });
-    console.log(typeof this.state.showenBooks);
   };
-
-
 
   render() {
     return (
@@ -192,7 +214,6 @@ class BooksApp extends React.Component {
                 {/* {console.log(b[1].title.toLowerCase())} */}
 
                 <div>
-                 
                   <BookList Books={this.state.showenBooks} />
                 </div>
               </div>
@@ -206,7 +227,7 @@ class BooksApp extends React.Component {
             <div className='list-books-title'>
               <h1>MyReads</h1>
             </div>
-
+            {console.log(this.state.AllBooks)}
             <AllShelfs
               Books={this.state.AllBooks}
               reload={this.reloadShelves}

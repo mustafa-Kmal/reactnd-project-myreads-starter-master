@@ -111,22 +111,8 @@ class AllShelfs extends React.Component {
     };
   }
 
-  updateShelf = (book, e) => {
-    const bookToChange = this.state.AllBooks.book;
-    const oldShlef = bookToChange.shelf;
-    this.setState({
-      oldShelf: e.target.value,
-    });
-  };
-
-
-  
-
   render() {
- 
-
-    const  Books  = this.props.Books;
-    
+    const Books = this.props.Books;
 
     return (
       <div className='list-books-content'>
@@ -158,41 +144,12 @@ class AllShelfs extends React.Component {
                     Object.getOwnPropertyNames(this.state.AllShelfs)[i]
                   }
                   BooksInShelf={element}
-                  reload = {this.props.reload}
+                  reload={this.props.reload}
                 />
               </li>
             );
           })}
-          {/* {Object.keys(this.state.AllShelfs).map((shelfElement, i) => {
-            if (this.state.AllShelfs.hasOwnProperty(shelfElement)) {
-              var element = this.state.AllShelfs[shelfElement];
-              this.state.AllBooks.map((book) => {
-                if (
-                  book.shelf
-                    .toString()
-                    .replaceAll(/\s/g, "")
-                    .toLowerCase()
-                    .localeCompare(
-                      Object.getOwnPropertyNames(this.state.AllShelfs)
-                        [i].toString()
-                        .toLowerCase()
-                    ) === 0
-                ) {
-                  element.push(book);
-                }
-              });
-            }
-            return (
-              <li key={i}>
-                <Shelf
-                  ShelfName={
-                    Object.getOwnPropertyNames(this.state.AllShelfs)[i]
-                  }
-                  BooksInShelf={element}
-                />
-              </li>
-            );
-          })} */}
+          
         </ol>
       </div>
     );
