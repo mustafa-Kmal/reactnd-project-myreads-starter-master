@@ -127,42 +127,71 @@ class BooksApp extends React.Component {
 
   reloadShelves = (book, shelf) => {
     const books = this.state.AllBooks;
-    const BookToChange = Object.entries(books).find((e) => e[1] == book);
+    
+    const BookToChange = Object.entries(books).find((e) => {
+      
+      return e[1] == book[1][1]
+    });
 
     // BookToChange.shelf = shelf;
     BooksAPI.update(BookToChange, shelf).then(response =>{
       BookToChange[1].shelf = shelf;
       // console.log(Object.entries(this.state.AllBooks))
 
-      const fond = Object.entries(this.state.AllBooks)
-      .filter((bk) => {
+      // const BookElement = [[book[0],  book[1][1]]]
+
+      // const fond = Object.entries(this.state.AllBooks)
+      // .filter((bk) => {
        
 
-        return bk[1] !== book
-      })
-      // .concat(book);
+      //   return bk[1] !== book[1][1]
+      // }).concat(BookElement);
 
-      // .reduce((obj, key) => {
-      //   obj[key] = this.state.AllBooks[key];
-      //   return obj;
-      // }, {}) ;
+      // const final = Object.entries(this.state.AllBooks)
+      // .filter((bk) => {
+      //   return bk[1].id !== book[1][1].id
+      // })
+      // .concat(BookElement)
 
+      
 
-       console.log(fond)
+      //  console.log(BookElement)
+      //  console.log(fond)
+      //  console.log(final)
+      //  console.log(this.state.AllBooks)
 
-      this.setState((prevState) => ({
-        AllBooks: Object.entries(prevState.AllBooks)
-          .filter((bk) => {
-            return bk[1].id !== book
-          })
-          .concat(book),
-      }));
+      //  this.setState({ AllBooks: [] });
+
+       BooksAPI.getAll().then((AllBooks) => {
+        // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
+        console.log(typeof Object.keys(AllBooks))
+  
+        this.setState({ AllBooks });
+        
+      });
+
+      // this.setState((prevState) => ({
+      //   AllBooks: Object.entries(prevState.AllBooks)
+      //     .filter((bk) => {
+            
+      //       return bk[1].id !== book[1][1].id
+      //     })
+      //     .concat(BookElement),
+      // }));
 
     });
 
 
     
   };
+
+
+
+
+
+
+
+
 
   updateQuery = (query) => {
     this.setState(() => ({

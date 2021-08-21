@@ -121,20 +121,42 @@ class AllShelfs extends React.Component {
           {Object.keys(this.state.AllShelfs).map((shelfElement, i) => {
             if (this.state.AllShelfs.hasOwnProperty(shelfElement)) {
               var element = this.state.AllShelfs[shelfElement];
+              
+              
+            //   const booksInShelf = Object.entries(Books).filter((book) => {
+                
+            //     return (
+            //       book[1].shelf
+            //         .toString()
+            //         .replaceAll(/\s/g, "")
+            //         .toLowerCase()
+            //         .localeCompare(
+            //           Object.getOwnPropertyNames(this.state.AllShelfs)
+            //             [i].toString()
+            //             .toLowerCase()
+            //         ) === 0
+            //     );
+            //   });
+              
+              
+              
               Object.entries(Books).map((book) => {
+
+               if(book[1].shelf){
                 if (
-                  book[1].shelf
-                    .toString()
-                    .replaceAll(/\s/g, "")
-                    .toLowerCase()
-                    .localeCompare(
-                      Object.getOwnPropertyNames(this.state.AllShelfs)
-                        [i].toString()
-                        .toLowerCase()
-                    ) === 0
-                ) {
-                  element.push(book);
-                }
+                    book[1].shelf
+                      .toString()
+                      .replaceAll(/\s/g, "")
+                      .toLowerCase()
+                      .localeCompare(
+                        Object.getOwnPropertyNames(this.state.AllShelfs)
+                          [i].toString()
+                          .toLowerCase()
+                      ) === 0
+                  ) {
+                    element.push(book);
+                  }
+               }
               });
             }
             return (

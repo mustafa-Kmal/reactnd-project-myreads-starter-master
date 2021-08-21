@@ -26,8 +26,9 @@ class Shelf extends React.Component {
                 <li key={book[1].id}>
                   {" "}
                   <Book
-                    Book={book}
+                    book={book}
                     onChangeShelf={this.props.reload}
+                    books = {this.props.BooksInShelf}
                   />
                 </li>
               );
