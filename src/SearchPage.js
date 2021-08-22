@@ -23,7 +23,6 @@ class SearchPage extends React.Component {
   componentDidMount() {
     BooksAPI.getAll().then((showenBooks) => {
       // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
-      console.log(typeof Object.keys(showenBooks));
 
       this.setState({ showenBooks });
     });
@@ -53,7 +52,7 @@ class SearchPage extends React.Component {
     return (
       <div className='search-books'>
         <div className='search-books-bar'>
-          <Link to='./' className='search-books'>
+          <Link to='./' className='close-search'>
             <button className='close-search' onClick={this.props.onClick}>
               Close
             </button>

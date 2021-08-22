@@ -21,7 +21,6 @@ class BookList extends React.Component {
                 : noCover;
             const title = book[1].title ? book[1].title : "No title available";
             {
-              console.log(BookList);
             }
             return (
               <li key={book[1].id}>

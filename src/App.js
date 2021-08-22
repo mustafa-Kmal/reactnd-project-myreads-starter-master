@@ -119,9 +119,6 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((AllBooks) => {
-      // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
-      console.log(typeof Object.keys(AllBooks));
-
       this.setState({ AllBooks });
     });
   }
@@ -129,15 +126,38 @@ class BooksApp extends React.Component {
   reloadShelves = (book, shelf) => {
     const books = this.state.AllBooks;
 
-    const BookToChange = Object.entries(books).find((e) => {
-      return e[1] == book[1][1];
-    });
+    const BookToChange = Object.entries(books).find(
+      (e) => e[1].id == book[1].id
+    )
+      ? Object.entries(books).find((e) => e[1].id == book[1].id)
+      : book;
+
+      
+      const NewBookWillBeNumber = Object.keys(this.state.AllBooks).length;
+
+
+      BooksAPI.get(book[1].id).then((recievedBook)=>{
+        this.setState((currState)=>({
+          AllBooks  : currState.AllBooks[NewBookWillBeNumber] = recievedBook
+        }))
+      });
+     
+
+
+      console.log( BookToChange[1]);
+     
 
     // BookToChange.shelf = shelf;
-    BooksAPI.update(BookToChange, shelf).then((response) => {
-      BookToChange[1].shelf = shelf;
-      // console.log(Object.entries(this.state.AllBooks))
+    BookToChange[1].shelf = shelf;
+    BooksAPI.update(BookToChange[1], shelf).then((response) => {
+      
+     
 
+      console.log( this.state.AllBooks);
+
+      // this.setState((currState)=>({
+      //   AllBooks  : currState.AllBooks[NewBookWillBeNumber].shelf = shelf
+      // }))
       // const BookElement = [[book[0],  book[1][1]]]
 
       // const fond = Object.entries(this.state.AllBooks)
@@ -159,21 +179,15 @@ class BooksApp extends React.Component {
 
       //  this.setState({ AllBooks: [] });
 
-      BooksAPI.getAll().then((AllBooks) => {
-        // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
-        console.log(typeof Object.keys(AllBooks));
+      // BooksAPI.getAll().then((AllBooks) => {
+      //   this.setState({ AllBooks });
+      // });
 
-        this.setState({ AllBooks });
-      });
-
-      // this.setState((prevState) => ({
-      //   AllBooks: Object.entries(prevState.AllBooks)
-      //     .filter((bk) => {
-
-      //       return bk[1].id !== book[1][1].id
-      //     })
-      //     .concat(BookElement),
-      // }));
+      this.setState((prevState) => ({
+        AllBooks: Object.entries(prevState.AllBooks)
+          .filter((bk) => bk[1].id !== book[1].id)
+          [NewBookWillBeNumber]=BookToChange,
+      }));
     });
   };
 
@@ -227,11 +241,12 @@ class BooksApp extends React.Component {
               />
 
               <div className='open-search'>
-              <Link to='./search' className='search-books'>
-              <button onClick={() => this.setState({ showSearchPage: true })}>
-                  Add a book
-                </button>
-            </Link>
+                <Link to='./search' className='search-books'>
+                  <button
+                    onClick={() => this.setState({ showSearchPage: true })}>
+                    Add a book
+                  </button>
+                </Link>
                 {/* <button onClick={() => this.setState({ showSearchPage: true })}>
                   Add a book
                 </button> */}
@@ -239,8 +254,6 @@ class BooksApp extends React.Component {
             </div>
           )}
         />
-
-       
       </div>
     );
   }
