@@ -20,7 +20,7 @@ class ResultBook extends React.Component {
 
         <div className='book'>
           <div className='book-top'>
-            <div className='book-cover' style={{width: 128, height: 193 ,  backgroundImage:  'url(' + this.props.BookTitle+ ')'}} /> {console.log(this.props.BookCover)}
+            <div className='book-cover' style={{width: 128, height: 193 ,  backgroundImage:  'url(' + this.props.BookCover+ ')'}} /> 
             <div className='book-shelf-changer'> 
           
               

@@ -19,18 +19,18 @@ class Book extends React.Component {
     
     return (
       
-      <div className={this.props.book[1][1].shelf}>
+      <div className={this.props.shelf}>
                       
 
 
         <div className='book'>
           <div className='book-top'>
-            <div className='book-cover' style={{width: 128, height: 193 ,  backgroundImage:  'url(' + this.props.book[1][1].imageLinks.smallThumbnail+ ')'}} />
+            <div className='book-cover' style={{width: 128, height: 193 ,  backgroundImage:  'url(' + this.props.BookCover+ ')'}} />
             <div className='book-shelf-changer'> 
           
               
             
-            <select defaultValue={this.props.book[1][1].shelf}  onChange={e => this.props.onChangeShelf(this.props.book, e.target.value)}>
+            <select defaultValue={this.props.shelf}  onChange={e => this.props.onChangeShelf(this.props.BookObj, e.target.value)}>
                 <option value='move' disabled>
                   Move to...
                 </option>
@@ -41,8 +41,8 @@ class Book extends React.Component {
               </select>
             </div>
           </div>
-          <div className='book-title'>{this.props.book[1][1].title}</div>
-          <div className='book-authors'>{this.props.book[1][1].authors}</div>
+          <div className='book-title'>{this.props.BookTitle}</div>
+          <div className='book-authors'>{this.props.BookAuthors}</div>
           
         </div>
       </div>

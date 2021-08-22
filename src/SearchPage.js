@@ -79,7 +79,7 @@ class SearchPage extends React.Component {
             {/* {console.log(b[1].title.toLowerCase())} */}
 
             <div>
-              {console.log(this.props.Books)}
+              
               <BookList Books={this.state.showenBooks} reload={this.props.reload} />
             </div>
           </div>
