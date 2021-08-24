@@ -1,32 +1,24 @@
 import React, { Component } from "react";
 // import * as BooksAPI from './BooksAPI'
 import "./App.css";
-import DropDown from "./DropDown";
 import PropTypes from "prop-types";
-import Book from "./Book";
 import BookList from "./BookList";
 import { Link } from "react-router-dom";
 import * as BooksAPI from "./BooksAPI";
 
 class SearchPage extends React.Component {
-  static propTypes = {
-    BooksInShelf: PropTypes.array.isRequired,
-    ShelfName: PropTypes.string.isRequired,
-  };
-
   state = {
     query: "",
     showenBooks: [],
   };
 
+  //   componentDidMount() {
+  //     BooksAPI.getAll().then((showenBooks) => {
+  //       // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
 
-//   componentDidMount() {
-//     BooksAPI.getAll().then((showenBooks) => {
-//       // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
-
-//       this.setState({ showenBooks });
-//     });
-//   }
+  //       this.setState({ showenBooks });
+  //     });
+  //   }
 
   updateQuery = (q) => {
     this.setState(() => ({
@@ -53,13 +45,9 @@ class SearchPage extends React.Component {
       <div className='search-books'>
         <div className='search-books-bar'>
           <Link to='./' className='close-search'>
-         
-
             <button className='close-search' onClick={this.props.onClick}>
               Close
-              
             </button>
-            
           </Link>
 
           <div className='search-books-input-wrapper'>
@@ -82,8 +70,10 @@ class SearchPage extends React.Component {
             {/* {console.log(b[1].title.toLowerCase())} */}
 
             <div>
-              
-              <BookList Books={this.state.showenBooks} reload={this.props.reload} />
+              <BookList
+                Books={this.state.showenBooks}
+                reload={this.props.reload}
+              />
             </div>
           </div>
         </div>

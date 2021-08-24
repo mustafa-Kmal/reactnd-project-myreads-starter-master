@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import * as BooksAPI from "./BooksAPI";
 import "./App.css";
-import DropDown from "./DropDown";
-import PropTypes from "prop-types";
+
 import Book from "./Book";
-import Shelf from "./Shelf";
 import noCover from "./icons/no-cover-image.png";
-import ResultBook from "./ResultBook";
 
 class BookList extends React.Component {
   render() {

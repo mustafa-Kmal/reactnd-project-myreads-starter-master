@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 // import * as BooksAPI from './BooksAPI'
 import "./App.css";
-import DropDown from "./DropDown";
-import PropTypes from "prop-types";
+
 import Shelf from "./Shelf";
 
 class AllShelfs extends React.Component {
@@ -13,21 +12,17 @@ class AllShelfs extends React.Component {
 
       read: [],
     },
-
-
   };
-  
 
   render() {
     return (
       <div className='list-books-content'>
         {" "}
-   
         <ol>
           {Object.keys(this.state.AllShelfs).map((shelfElement, i) => {
             if (this.state.AllShelfs.hasOwnProperty(shelfElement)) {
               var element = this.state.AllShelfs[shelfElement];
-              var BObjcts =[];
+              var BObjcts = [];
 
               Object.entries(this.props.Books).map((book) => {
                 if (book[1].shelf) {
@@ -50,14 +45,13 @@ class AllShelfs extends React.Component {
             }
 
             return (
-                <Shelf key={i}
-                  ShelfName={
-                    Object.getOwnPropertyNames(this.state.AllShelfs)[i]
-                  }
-                  BooksInShelf={element}
-                  Oobjects = {BObjcts}
-                  reload={this.props.reload}
-                />
+              <Shelf
+                key={i}
+                ShelfName={Object.getOwnPropertyNames(this.state.AllShelfs)[i]}
+                BooksInShelf={element}
+                Oobjects={BObjcts}
+                reload={this.props.reload}
+              />
             );
           })}
         </ol>

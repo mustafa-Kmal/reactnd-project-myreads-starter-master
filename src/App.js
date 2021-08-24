@@ -1,10 +1,8 @@
 import React from "react";
 import * as BooksAPI from "./BooksAPI";
 import "./App.css";
-import Book from "./Book";
-import BookList from "./BookList";
+
 import AllShelfs from "./AllShelfs";
-import Shelf from "./Shelf";
 import SearchPage from "./SearchPage";
 import { Link } from "react-router-dom";
 import { Route } from "react-router-dom";

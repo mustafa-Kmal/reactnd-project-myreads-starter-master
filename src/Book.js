@@ -1,27 +1,19 @@
 import React, { Component } from "react";
-// import * as BooksAPI from './BooksAPI'
 import "./App.css";
-import DropDown from "./DropDown";
-import PropTypes from "prop-types";
-import Shelf from "./Shelf";
 
 class Book extends React.Component {
-  static propTypes = {
-    BookCover: PropTypes.string.isRequired,
-    BookTitle: PropTypes.string.isRequired,
-    BookAuthors: PropTypes.array.isRequired,
-    shelf: PropTypes.string.isRequired,
-  };
-
   updateAll = (book, shelf) => {
     this.props.onChangeShelf(book, shelf);
-    if (book != "undefined" && typeof shelf != "undefined"  && this.props.books) {
+    if (
+      book != "undefined" &&
+      typeof shelf != "undefined" &&
+      this.props.books
+    ) {
       if (
         Object.entries(this.props.books).find((e) => {
-          if (typeof e[1] !== 'undefined') {
-          
-        return  e[1].id == book[1].id;
-        }
+          if (typeof e[1] !== "undefined") {
+            return e[1].id == book[1].id;
+          }
         })
       ) {
         this.props.makeNewShlef(book, shelf);
