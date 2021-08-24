@@ -20,13 +20,13 @@ class SearchPage extends React.Component {
   };
 
 
-  componentDidMount() {
-    BooksAPI.getAll().then((showenBooks) => {
-      // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
+//   componentDidMount() {
+//     BooksAPI.getAll().then((showenBooks) => {
+//       // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
 
-      this.setState({ showenBooks });
-    });
-  }
+//       this.setState({ showenBooks });
+//     });
+//   }
 
   updateQuery = (q) => {
     this.setState(() => ({
@@ -53,9 +53,13 @@ class SearchPage extends React.Component {
       <div className='search-books'>
         <div className='search-books-bar'>
           <Link to='./' className='close-search'>
+         
+
             <button className='close-search' onClick={this.props.onClick}>
               Close
+              
             </button>
+            
           </Link>
 
           <div className='search-books-input-wrapper'>

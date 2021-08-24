@@ -8,6 +8,7 @@ import Shelf from "./Shelf";
 import SearchPage from "./SearchPage";
 import { Link } from "react-router-dom";
 import { Route } from "react-router-dom";
+import _ from 'lodash';
 
 class BooksApp extends React.Component {
   state = {
@@ -19,100 +20,8 @@ class BooksApp extends React.Component {
     },
     showenBooks: [],
 
-    AllBooks: [
-      // "0": {
-      //   id: "1",
-      //   BookCover: {
-      //     width: 128,
-      //     height: 193,
-      //     backgroundImage:
-      //       'url("http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api")',
-      //   },
-      //   BookTitle: "To Kill a Mockingbird",
-      //   BookAuthors: "Harper Lee",
-      //   shelf: "Currently Reading",
-      // },
-      // "2": {
-      //   id: "2",
-      //   BookCover: {
-      //     width: 128,
-      //     height: 188,
-      //     backgroundImage:
-      //       'url("http://books.google.com/books/content?id=yDtCuFHXbAYC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72RRiTR6U5OUg3IY_LpHTL2NztVWAuZYNFE8dUuC0VlYabeyegLzpAnDPeWxE6RHi0C2ehrR9Gv20LH2dtjpbcUcs8YnH5VCCAH0Y2ICaKOTvrZTCObQbsfp4UbDqQyGISCZfGN&source=gbs_api")',
-      //   },
-      //   BookTitle: "Ender's Game",
-      //   BookAuthors: "Orson Scott Card",
-      //   shelf: "Currently Reading",
-      // },
-      // "3": {
-      //   id: "3",
-      //   BookCover: {
-      //     width: 128,
-      //     height: 193,
-      //     backgroundImage:
-      //       'url("http://books.google.com/books/content?id=uu1mC6zWNTwC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73pGHfBNSsJG9Y8kRBpmLUft9O4BfItHioHolWNKOdLavw-SLcXADy3CPAfJ0_qMb18RmCa7Ds1cTdpM3dxAGJs8zfCfm8c6ggBIjzKT7XR5FIB53HHOhnsT7a0Cc-PpneWq9zX&source=gbs_api")',
-      //   },
-      //   BookTitle: "1776",
-      //   BookAuthors: "David McCullough",
-      //   shelf: "Want to Read",
-      // },
-      // "4": {
-      //   id: "4",
-      //   BookCover: {
-      //     width: 128,
-      //     height: 192,
-      //     backgroundImage:
-      //       'url("http://books.google.com/books/content?id=wrOQLV6xB-wC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72G3gA5A-Ka8XjOZGDFLAoUeMQBqZ9y-LCspZ2dzJTugcOcJ4C7FP0tDA8s1h9f480ISXuvYhA_ZpdvRArUL-mZyD4WW7CHyEqHYq9D3kGnrZCNiqxSRhry8TiFDCMWP61ujflB&source=gbs_api")',
-      //   },
-      //   BookTitle: "Harry Potter and the Sorcerer's Stone",
-      //   BookAuthors: "J.K. Rowling",
-      //   shelf: "Want to Read",
-      // },
-      // "5": {
-      //   id: "5",
-      //   BookCover: {
-      //     width: 128,
-      //     height: 192,
-      //     backgroundImage:
-      //       'url("http://books.google.com/books/content?id=pD6arNyKyi8C&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE70Rw0CCwNZh0SsYpQTkMbvz23npqWeUoJvVbi_gXla2m2ie_ReMWPl0xoU8Quy9fk0Zhb3szmwe8cTe4k7DAbfQ45FEzr9T7Lk0XhVpEPBvwUAztOBJ6Y0QPZylo4VbB7K5iRSk&source=gbs_api")',
-      //   },
-      //   BookTitle: "Harry Potter and the Sorcerer's Stone",
-      //   BookAuthors: "J.K. Rowling",
-      //   shelf: "Read",
-      // },
-      // "6": {
-      //   id: "6",
-      //   BookCover: {
-      //     width: 128,
-      //     height: 174,
-      //     backgroundImage:
-      //       'url("http://books.google.com/books/content?id=1q_xAwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE712CA0cBYP8VKbEcIVEuFJRdX1k30rjLM29Y-dw_qU1urEZ2cQ42La3Jkw6KmzMmXIoLTr50SWTpw6VOGq1leINsnTdLc_S5a5sn9Hao2t5YT7Ax1RqtQDiPNHIyXP46Rrw3aL8&source=gbs_api")',
-      //   },
-      //   BookTitle: "Oh, the Places You'll Go!",
-      //   BookAuthors: "Seuss",
-      //   shelf: "Read",
-      // },
-      // "7": {
-      //   id: "7",
-      //   BookCover: {
-      //     width: 128,
-      //     height: 192,
-      //     backgroundImage:
-      //       'url("http://books.google.com/books/content?id=32haAAAAMAAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72yckZ5f5bDFVIf7BGPbjA0KYYtlQ__nWB-hI_YZmZ-fScYwFy4O_fWOcPwf-pgv3pPQNJP_sT5J_xOUciD8WaKmevh1rUR-1jk7g1aCD_KeJaOpjVu0cm_11BBIUXdxbFkVMdi&source=gbs_api")',
-      //   },
-      //   BookTitle: "The Adventures of Tom Sawyer",
-      //   BookAuthors: "Mark Twain",
-      //   shelf: "Read",
-      // },
-    ],
+    AllBooks: [],
 
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: false,
 
     query: "",
   };
@@ -123,7 +32,7 @@ class BooksApp extends React.Component {
     });
   }
 
-  reloadShelves = (book, shelf) => {
+  reloadShelves = async (book, shelf) => {
     const books = this.state.AllBooks;
 
     const BookToChange = Object.entries(books).find(
@@ -131,83 +40,59 @@ class BooksApp extends React.Component {
     )
       ? Object.entries(books).find((e) => e[1].id == book[1].id)
       : book;
+    // console.log(book);
 
-      
-      const NewBookWillBeNumber = Object.keys(this.state.AllBooks).length;
+    const NewBookWillBeNumber = Object.keys(this.state.AllBooks).length;
+    const NumberOfTheCurrentBookToChange = BookToChange[0];
+ 
 
-
-      BooksAPI.get(book[1].id).then((recievedBook)=>{
-        this.setState((currState)=>({
-          AllBooks  : currState.AllBooks[NewBookWillBeNumber] = recievedBook
-        }))
-      });
-     
-
-
-      console.log( BookToChange[1]);
-     
-
-    // BookToChange.shelf = shelf;
     BookToChange[1].shelf = shelf;
-    BooksAPI.update(BookToChange[1], shelf).then((response) => {
+
+    BooksAPI.update(BookToChange[1], shelf).then(() => {
+      // console.log(this.state.AllBooks);
+
       
-     
+      // this.setState((currstate)=>{ 
+      //   return { AllBooks: {...currstate.AllBooks, BookToChange}}
+      //  });
 
-      console.log( this.state.AllBooks);
+      // console.log(this.state.AllBooks);
+      // this.setState((curr)=>{ 
+      
+      // // console.log('it will be number ', BookToChange[0]);
+      // // console.log('and the element is: ', BookToChange[1]);
 
-      // this.setState((currState)=>({
-      //   AllBooks  : currState.AllBooks[NewBookWillBeNumber].shelf = shelf
-      // }))
-      // const BookElement = [[book[0],  book[1][1]]]
+      // //   Object.entries(curr.AllBooks).filter((bk)=> {
+      // //     console.log(bk[1].id , BookToChange[1].id , bk[1].id !== BookToChange[1].id );
+      // //     return bk[1].id !== BookToChange[1].id
+      // //   })
+      // //   console.log(curr.AllBooks);
 
-      // const fond = Object.entries(this.state.AllBooks)
-      // .filter((bk) => {
+      //   let state = {...curr.AllBooks,  NumberOfTheCurrentBookToChange: BookToChange[1]}
+      //   return {AllBooks : {state}}
 
-      //   return bk[1] !== book[1][1]
-      // }).concat(BookElement);
+      // //   curr.AllBooks[BookToChange[0]]=BookToChange[1]
+      // //   console.log(curr.AllBooks);
 
-      // const final = Object.entries(this.state.AllBooks)
-      // .filter((bk) => {
-      //   return bk[1].id !== book[1][1].id
-      // })
-      // .concat(BookElement)
 
-      //  console.log(BookElement)
-      //  console.log(fond)
-      //  console.log(final)
-      //  console.log(this.state.AllBooks)
+      //   // let AllBooks = _.merge(curr.AllBooks,BookToChange[1] )
+      //   // let AllBooks= Object.assign({},JSON.parse(JSON.stringify(BookToChange)), JSON.parse(JSON.stringify(curr.AllBooks)))
 
-      //  this.setState({ AllBooks: [] });
+      //   // AllBooks : curr.AllBooks[BookToChange[0]].shelf = shelf
+        
+      //  });
+   
+// console.log(this.state.AllBooks);
 
-      // BooksAPI.getAll().then((AllBooks) => {
-      //   this.setState({ AllBooks });
-      // });
-
+      
       this.setState((prevState) => ({
-        AllBooks: Object.entries(prevState.AllBooks)
-          .filter((bk) => bk[1].id !== book[1].id)
-          [NewBookWillBeNumber]=BookToChange,
+        // let state = {...prevState.AllBooks,BookToChange};
+        AllBooks: (prevState.AllBooks[NewBookWillBeNumber] = BookToChange),
+        // AllBooks: {...prevState.AllBooks, BookToChange},
+
       }));
+      // console.log(this.state.AllBooks);
     });
-  };
-
-  updateQuery = (query) => {
-    this.setState(() => ({
-      query: query,
-    }));
-
-    if (this.state.query) {
-      // this.state.AllBooks = this.state.AllBooks;
-      BooksAPI.search(this.state.query.trim().toLowerCase(), 20).then(
-        (showenBooks) => {
-          showenBooks.length > 0
-            ? this.setState({ showenBooks: showenBooks })
-            : this.setState({ showenBooks: [], searchErr: true });
-        }
-      );
-
-      // if query is empty => reset state to default
-    } else this.setState({ showenBooks: [] });
   };
 
   render() {
@@ -221,7 +106,7 @@ class BooksApp extends React.Component {
               updateQuery={this.updateQuery}
               Books={this.state.AllBooks}
               reload={this.reloadShelves}
-              onClick={() => this.setState({ showSearchPage: false })}
+              // onClick={() => this.setState({ showSearchPage: false })}
             />
           )}
         />
@@ -242,14 +127,8 @@ class BooksApp extends React.Component {
 
               <div className='open-search'>
                 <Link to='./search' className='search-books'>
-                  <button
-                    onClick={() => this.setState({ showSearchPage: true })}>
-                    Add a book
-                  </button>
+                  <button>Add a book</button>
                 </Link>
-                {/* <button onClick={() => this.setState({ showSearchPage: true })}>
-                  Add a book
-                </button> */}
               </div>
             </div>
           )}
