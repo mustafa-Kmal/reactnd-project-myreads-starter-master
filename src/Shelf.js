@@ -1,10 +1,9 @@
-import React, { Component } from "react";
+import React  from "react";
 // import * as BooksAPI from './BooksAPI'
 import "./App.css";
-import DropDown from "./DropDown";
 import PropTypes from "prop-types";
 import Book from "./Book";
-import ResultBook from "./ResultBook";
+
 import noCover from "./icons/no-cover-image.png";
 
 class Shelf extends React.Component {
@@ -17,38 +16,7 @@ class Shelf extends React.Component {
     currntBooks: this.props.BooksInShelf,
   };
 
-  deleteBookFromOldShelf = (book, shlef) => {
-    if (
-      Object.entries(this.state.currntBooks).find((e) => {
-        if (typeof e[1] !== 'undefined') {
-           
-        return  e[1].id == book[1].id;
-        }
-      })
-    ) {
-      console.log("i came here to delete");
-      const BookNumber = book[0];
-     
-
-      this.setState((currState) => {
-        currntBooks: currState.currntBooks[BookNumber] = undefined;
-      });
-    }
-  };
-
-  addABookToTheNewShelf = (book, shlef) => {
-    // console.log("i came here to add");
-    // const numberOfBooks = this.state.currntBooks.Length;
-    // console.log(this.state.currntBooks);
-
-    // // await this.setState((currState) => {
-    // //   currntBooks: currState.currntBooks[numberOfBooks] = book
-    // // });
-    // this.setState({ ...this.state.currntBooks, numberOfBooks: book });
-
-    // console.log(this.state.currntBooks);
-    // console.log("the new book was added here");
-  };
+ 
 
   render() {
     const ShelfName = this.props.ShelfName;

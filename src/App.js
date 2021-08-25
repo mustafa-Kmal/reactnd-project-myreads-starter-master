@@ -6,7 +6,7 @@ import AllShelfs from "./AllShelfs";
 import SearchPage from "./SearchPage";
 import { Link } from "react-router-dom";
 import { Route } from "react-router-dom";
-import _ from 'lodash';
+
 
 class BooksApp extends React.Component {
   state = {
@@ -20,7 +20,6 @@ class BooksApp extends React.Component {
 
     AllBooks: [],
 
-
     query: "",
   };
 
@@ -30,65 +29,105 @@ class BooksApp extends React.Component {
     });
   }
 
+  mergerTwoObjects = (obj1, obj2) => {
+    var newArr = [];
+    var temp = Object.keys(obj1).map((key) => {
+      // console.log(key[1])
+      return newArr.push(obj1[Number(key)]);
+    });
+
+    // console.log(newArr);
+
+    const omomom = obj2.id;
+
+    
+    var newArr2 = [];
+    newArr.map((ob) => {
+      if (omomom !== ob.id) {
+        newArr2.push(ob);
+      }
+    });
+
+   
+
+    newArr2.push(obj2);
+
+       // console.log(objNew);
+    return newArr2;
+  };
+
   reloadShelves = async (book, shelf) => {
     const books = this.state.AllBooks;
 
     const BookToChange = Object.entries(books).find(
-      (e) => e[1].id == book[1].id
+      (e) => e[1].id === book[1].id
     )
-      ? Object.entries(books).find((e) => e[1].id == book[1].id)
+      ? Object.entries(books).find((e) => e[1].id === book[1].id)
       : book;
-    // console.log(book);
+    console.log(book);
 
     const NewBookWillBeNumber = Object.keys(this.state.AllBooks).length;
     const NumberOfTheCurrentBookToChange = BookToChange[0];
- 
 
-    BookToChange[1].shelf = shelf;
+    // console.log(book[1]);
 
-    BooksAPI.update(BookToChange[1], shelf).then(() => {
-      // console.log(this.state.AllBooks);
+    console.log(this.state.AllBooks);
 
+    //  this.mergerTwoObjects(this.state.AllBooks, book[1]);
+    
+
+    console.log(this.mergerTwoObjects(this.state.AllBooks, book[1]));
+
+    // BookToChange[1].shelf = shelf;
+    
+
+    // console.log(Object.entries(books).fisnd((e) => e[1].id == book[1].id));
+
+    // if (
+    //   !Object.entries(books).find((e) => e[1].id == book[1].id) ||
+    //   typeof Object.entries(books).find((e) => e[1].id == book[1].id) ==
+    //     "undefined"
+    // ) {
+    //   BooksAPI.get(BookToChange[1].id).then((receivedBook) => {
+    //     // this.setState((prevState) => ({
+    //     //   // let state = {...prevState.AllBooks,BookToChange};
+    //     //   AllBooks: (prevState.AllBooks[NewBookWillBeNumber] = BookToChange),
+    //     //   // AllBooks: {...prevState.AllBooks, BookToChange},
+    //     // }));
+    //   });
+    // }
+
+    // BooksAPI.update(BookToChange[1], shelf).then(() => {
+    BooksAPI.update(BookToChange[1], shelf).then((response) => {
+      BookToChange[1].shelf = shelf;
       
-      // this.setState((currstate)=>{ 
-      //   return { AllBooks: {...currstate.AllBooks, BookToChange}}
-      //  });
+    //   this.setState((curr)=>{
+    //     AllBooks : curr.AllBooks = {}
+    //   }, () => {
+       
+    //  });
+    console.log(this.state.AllBooks)
 
-      // console.log(this.state.AllBooks);
-      // this.setState((curr)=>{ 
-      
-      // // console.log('it will be number ', BookToChange[0]);
-      // // console.log('and the element is: ', BookToChange[1]);
-
-      // //   Object.entries(curr.AllBooks).filter((bk)=> {
-      // //     console.log(bk[1].id , BookToChange[1].id , bk[1].id !== BookToChange[1].id );
-      // //     return bk[1].id !== BookToChange[1].id
-      // //   })
-      // //   console.log(curr.AllBooks);
-
-      //   let state = {...curr.AllBooks,  NumberOfTheCurrentBookToChange: BookToChange[1]}
-      //   return {AllBooks : {state}}
-
-      // //   curr.AllBooks[BookToChange[0]]=BookToChange[1]
-      // //   console.log(curr.AllBooks);
+    this.setState(prevState => ({
+      AllBooks: prevState.AllBooks
+        // remove updated book from array
+        .filter(bk => bk.id !== BookToChange[1].id)
+        // add updated book to array
+        .concat(BookToChange[1])
+    }), ()=>(console.log(this.state.AllBooks))
+    
+    );
 
 
-      //   // let AllBooks = _.merge(curr.AllBooks,BookToChange[1] )
-      //   // let AllBooks= Object.assign({},JSON.parse(JSON.stringify(BookToChange)), JSON.parse(JSON.stringify(curr.AllBooks)))
+      //  this.state.AllBooks = this.mergerTwoObjects(this.state.AllBooks, BookToChange[1]);
+      // console.log(this.state.AllBooks)
+     
 
-      //   // AllBooks : curr.AllBooks[BookToChange[0]].shelf = shelf
-        
-      //  });
-   
-// console.log(this.state.AllBooks);
-
-      
-      this.setState((prevState) => ({
-        // let state = {...prevState.AllBooks,BookToChange};
-        AllBooks: (prevState.AllBooks[NewBookWillBeNumber] = BookToChange),
-        // AllBooks: {...prevState.AllBooks, BookToChange},
-
-      }));
+      // this.setState((prevState) => ({
+      //   // AllBooks: (prevState.AllBooks[NewBookWillBeNumber] = BookToChange),
+      //   // AllBooks: this.mergerTwoObjects(prevState.AllBooks, BookToChange[1]),
+      //   AllBooks : prevState.AllBooks
+      // }));
       // console.log(this.state.AllBooks);
     });
   };
@@ -123,10 +162,11 @@ class BooksApp extends React.Component {
                 reload={this.reloadShelves}
               />
 
-              <div className='open-search'>
-                <Link to='./search' className='search-books'>
-                  <button>Add a book</button>
-                </Link>
+              <div className='open-search button'>
+                <Link
+                  to='./search'
+                  className='search-books button open-search'
+                />
               </div>
             </div>
           )}

@@ -1,10 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 // import * as BooksAPI from './BooksAPI'
 import "./App.css";
-import PropTypes from "prop-types";
-import BookList from "./BookList";
+
 import { Link } from "react-router-dom";
 import * as BooksAPI from "./BooksAPI";
+import Book from "./Book";
+import noCover from "./icons/no-cover-image.png";
 
 class SearchPage extends React.Component {
   state = {
@@ -12,73 +13,93 @@ class SearchPage extends React.Component {
     showenBooks: [],
   };
 
-  //   componentDidMount() {
-  //     BooksAPI.getAll().then((showenBooks) => {
-  //       // const newAllBooks = Object.entries(AllBooks).map((b)=>{ b[1]});
+  updateShelvesForShowenBooks = (bookelement) => {
+    const SHELF = Object.entries(this.props.Books).find(
+      (e) => e[1].id === bookelement[1].id
+    )
+      ? Object.entries(this.props.Books).find(
+          (e) => e[1].id === bookelement[1].id
+        )[1].shelf
+      : "none";
 
-  //       this.setState({ showenBooks });
-  //     });
-  //   }
+    return SHELF;
+  };
 
   updateQuery = (q) => {
     this.setState(() => ({
       query: q,
     }));
 
-    if (this.state.query) {
+    if (q) {
       // this.state.AllBooks = this.state.AllBooks;
-      BooksAPI.search(this.state.query.trim().toLowerCase(), 20).then(
-        (showenBooks) => {
-          showenBooks.length > 0
-            ? this.setState({ showenBooks: showenBooks })
-            : this.setState({ showenBooks: [], searchErr: true });
-        }
-      );
+      BooksAPI.search(q.trim(), 20).then((showenBooks) => {
+        showenBooks.length > 0
+          ? this.setState({ showenBooks: showenBooks }, function () {
+            console.log(this.state.query);
+          })
+          : this.setState({ showenBooks: [], searchErr: true });
+      });
 
       // if query is empty => reset state to default
-    } else this.setState({ showenBooks: [] });
+    } else this.setState({ showenBooks: [] })
   };
 
+
   render() {
-    const { BooksInShelf, ShelfName } = this.props;
+    // const { BooksInShelf, ShelfName } = this.props;
     return (
       <div className='search-books'>
         <div className='search-books-bar'>
           <Link to='./' className='close-search'>
-            <button className='close-search' onClick={this.props.onClick}>
+            {/* <button className='close-search' onClick={this.props.onClick}>
               Close
-            </button>
+            </button> */}
           </Link>
 
           <div className='search-books-input-wrapper'>
-            {/*
-              NOTES: The search from BooksAPI is limited to a particular set of search terms.
-              You can find these search terms here:
-              https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-              However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-              you don't find a specific author or title. Every search is limited by search terms.
-            */}
-
             <input
               type='text'
               placeholder='Search by title or author'
               value={this.state.query}
               onChange={(e) => this.updateQuery(e.target.value)}
             />
-
-            {/* {console.log(b[1].title.toLowerCase())} */}
-
             <div>
-              <BookList
+              {/* <BookList
                 Books={this.state.showenBooks}
                 reload={this.props.reload}
-              />
+              /> */}
+
+              <ol className='books-grid'>
+                {Object.entries(this.state.showenBooks).map((book) => {
+                  const coverImg =
+                    book[1].imageLinks && book[1].imageLinks.thumbnail
+                      ? book[1].imageLinks.thumbnail
+                      : noCover;
+                  const title = book[1].title
+                    ? book[1].title
+                    : "No title available";
+
+                  const SHELF = this.updateShelvesForShowenBooks(book);
+
+                  return (
+                    <li key={book[1].id}>
+                      {" "}
+                      <Book
+                        books={this.props.BooksInShelf}
+                        BookObj={book}
+                        BookID={book[1].id}
+                        BookCover={coverImg}
+                        BookTitle={title}
+                        BookAuthors={book[1].authors}
+                        shelf={SHELF}
+                        onChangeShelf={this.props.reload}
+                      />
+                    </li>
+                  );
+                })}
+              </ol>
             </div>
           </div>
-        </div>
-        <div className='search-books-results'>
-          <ol className='books-grid' />
         </div>
       </div>
     );

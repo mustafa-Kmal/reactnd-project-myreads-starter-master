@@ -1,26 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import "./App.css";
 
 class Book extends React.Component {
   updateAll = (book, shelf) => {
     this.props.onChangeShelf(book, shelf);
-    if (
-      book != "undefined" &&
-      typeof shelf != "undefined" &&
-      this.props.books
-    ) {
-      if (
-        Object.entries(this.props.books).find((e) => {
-          if (typeof e[1] !== "undefined") {
-            return e[1].id == book[1].id;
-          }
-        })
-      ) {
-        this.props.makeNewShlef(book, shelf);
-
-        this.props.filterOldShelf(book, shelf);
-      }
-    }
+  
   };
 
   render() {
