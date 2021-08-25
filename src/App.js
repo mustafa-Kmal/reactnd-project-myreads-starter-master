@@ -56,6 +56,34 @@ class BooksApp extends React.Component {
     return newArr2;
   };
 
+
+
+
+
+
+
+
+/*
+
+I'm having a hard time figuring out how to update state immediately, 
+either in clearing out all the text in the search bar, 
+or in updating a book's shelf in the main page. 
+
+I've tried many different ways without any luck, please advice on how to do so
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
   reloadShelves = async (book, shelf) => {
     const books = this.state.AllBooks;
 
