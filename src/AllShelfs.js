@@ -20,36 +20,23 @@ class AllShelfs extends React.Component {
         {" "}
         <ol>
           {Object.keys(this.state.AllShelfs).map((shelfElement, i) => {
+            var shelfBooks;
             if (this.state.AllShelfs.hasOwnProperty(shelfElement)) {
-              var element = this.state.AllShelfs[shelfElement];
-              var BObjcts = [];
-
-              Object.entries(this.props.Books).map((book) => {
-                if (book[1].shelf) {
-                  if (
-                    book[1].shelf
-                      .toString()
-                      .replaceAll(/\s/g, "")
-                      .toLowerCase()
-                      .localeCompare(
-                        Object.getOwnPropertyNames(this.state.AllShelfs)
-                          [i].toString()
-                          .toLowerCase()
-                      ) === 0
-                  ) {
-                    element.push(book[1]);
-                    BObjcts.push(book);
-                  }
-                }
+              shelfBooks = this.props.Books.filter((book) => {
+                return (
+                  book.shelf
+                    .toString()
+                    .replaceAll(/\s/g, "")
+                    .toLowerCase() ===
+                  Object.getOwnPropertyNames(this.state.AllShelfs)[i].toString().toLowerCase()
+                );
               });
             }
-
             return (
               <Shelf
                 key={i}
                 ShelfName={Object.getOwnPropertyNames(this.state.AllShelfs)[i]}
-                BooksInShelf={element}
-                Oobjects={BObjcts}
+                BooksInShelf={shelfBooks}
                 reload={this.props.reload}
               />
             );

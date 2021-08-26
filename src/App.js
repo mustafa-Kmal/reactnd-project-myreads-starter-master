@@ -10,18 +10,9 @@ import { Route } from "react-router-dom";
 
 class BooksApp extends React.Component {
   state = {
-    AllShelfs: {
-      currentlyReading: [],
-      wantToRead: [],
+      AllBooks: [],
 
-      read: [],
-    },
-    showenBooks: [],
-
-    AllBooks: [],
-
-    query: "",
-  };
+      };
 
   componentDidMount() {
     BooksAPI.getAll().then((AllBooks) => {
@@ -29,134 +20,24 @@ class BooksApp extends React.Component {
     });
   }
 
-  mergerTwoObjects = (obj1, obj2) => {
-    var newArr = [];
-    var temp = Object.keys(obj1).map((key) => {
-      // console.log(key[1])
-      return newArr.push(obj1[Number(key)]);
-    });
-
-    // console.log(newArr);
-
-    const omomom = obj2.id;
-
-    
-    var newArr2 = [];
-    newArr.map((ob) => {
-      if (omomom !== ob.id) {
-        newArr2.push(ob);
-      }
-    });
-
-   
-
-    newArr2.push(obj2);
-
-       // console.log(objNew);
-    return newArr2;
-  };
-
-
-
-
-
-
-
-
-/*
-
-I'm having a hard time figuring out how to update state immediately, 
-either in clearing out all the text in the search bar, 
-or in updating a book's shelf in the main page. 
-
-I've tried many different ways without any luck, please advice on how to do so
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
   reloadShelves = async (book, shelf) => {
-    const books = this.state.AllBooks;
 
-    const BookToChange = Object.entries(books).find(
-      (e) => e[1].id === book[1].id
-    )
-      ? Object.entries(books).find((e) => e[1].id === book[1].id)
-      : book;
-    console.log(book);
-
-    const NewBookWillBeNumber = Object.keys(this.state.AllBooks).length;
-    const NumberOfTheCurrentBookToChange = BookToChange[0];
-
-    // console.log(book[1]);
-
-    console.log(this.state.AllBooks);
-
-    //  this.mergerTwoObjects(this.state.AllBooks, book[1]);
-    
-
-    console.log(this.mergerTwoObjects(this.state.AllBooks, book[1]));
-
-    // BookToChange[1].shelf = shelf;
-    
-
-    // console.log(Object.entries(books).fisnd((e) => e[1].id == book[1].id));
-
-    // if (
-    //   !Object.entries(books).find((e) => e[1].id == book[1].id) ||
-    //   typeof Object.entries(books).find((e) => e[1].id == book[1].id) ==
-    //     "undefined"
-    // ) {
-    //   BooksAPI.get(BookToChange[1].id).then((receivedBook) => {
-    //     // this.setState((prevState) => ({
-    //     //   // let state = {...prevState.AllBooks,BookToChange};
-    //     //   AllBooks: (prevState.AllBooks[NewBookWillBeNumber] = BookToChange),
-    //     //   // AllBooks: {...prevState.AllBooks, BookToChange},
-    //     // }));
-    //   });
-    // }
-
-    // BooksAPI.update(BookToChange[1], shelf).then(() => {
-    BooksAPI.update(BookToChange[1], shelf).then((response) => {
-      BookToChange[1].shelf = shelf;
+    BooksAPI.update(book, shelf).then((response) => {
+      book.shelf = shelf;
       
-    //   this.setState((curr)=>{
-    //     AllBooks : curr.AllBooks = {}
-    //   }, () => {
-       
-    //  });
+
     console.log(this.state.AllBooks)
 
     this.setState(prevState => ({
       AllBooks: prevState.AllBooks
         // remove updated book from array
-        .filter(bk => bk.id !== BookToChange[1].id)
+        .filter(bk => bk.id !== book.id)
         // add updated book to array
-        .concat(BookToChange[1])
+        .concat(book)
     }), ()=>(console.log(this.state.AllBooks))
     
     );
 
-
-      //  this.state.AllBooks = this.mergerTwoObjects(this.state.AllBooks, BookToChange[1]);
-      // console.log(this.state.AllBooks)
-     
-
-      // this.setState((prevState) => ({
-      //   // AllBooks: (prevState.AllBooks[NewBookWillBeNumber] = BookToChange),
-      //   // AllBooks: this.mergerTwoObjects(prevState.AllBooks, BookToChange[1]),
-      //   AllBooks : prevState.AllBooks
-      // }));
-      // console.log(this.state.AllBooks);
     });
   };
 
